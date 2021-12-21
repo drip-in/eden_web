@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "./output/",
+    "sourceMap": true,
+    "strictNullChecks": true,
+    "module": "commonjs",
+    "noImplicitAny": true,
+    "target": "es5",
+    "jsx": "react",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "lib": ["es2017", "dom"]
+  },
+  "include": ["./src/**/*"],
+  "typeRoots": ["./src/@types", "./node_modules/@types"]
+}
