@@ -8,26 +8,37 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
 import Header from './components/Header'
 
+import IdlVersion from '@/containers/idl-version';
+import IdlDeploy from '@/containers/idl-deploy';
+import IdlExecution from '@/containers/idl-execution';
+import ApiConfig from '@/containers/api-config';
+const IS_DEV = process.env.NODE_ENV !== 'production';
+const basename = IS_DEV ? '/' : '/insights/lite'
+
+export const Context = React.createContext({
+  loading: false,
+  toggle: (loading: boolean) => {}, 
+});
 class App extends Component {
+  state = {
+    loading: false,
+    toggle: (loading) => {
+        this.setState({ loading });
+    }
+  }
   render() {
     return (
-      <Router basename={location.pathname}>
-        <div>
-          <Header />
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-            <li>
-              <Link to="/dynamic">Dynamic</Link>
-            </li>
-          </ul>
-          <hr />
-          <Route exact path="/" component={Home} />
-          {/* <Route path="/about" component={About} /> */}
+      <Router basename={basename}>
+        <div className="Router">
+            <Context.Provider value={this.state}>
+              <div className="Content">
+                <Route exact path="/" component={Home} />
+                <Route path="/idl/version" exact component={IdlVersion} />
+                <Route path="/idl/deploy" exact component={IdlDeploy} />
+                <Route path="/idl/execution" exact component={IdlExecution} />
+                <Route path="/idl/config" exact component={ApiConfig} />
+              </div>
+            </Context.Provider>
         </div>
       </Router>
     );

@@ -355,9 +355,9 @@ module.exports = (env = {}) => {
         /moment[/\\]locale$/,
         /zh-cn/,
       ),
-      new ForkTsCheckerWebpackPlugin({
-        tsconfig: path.resolve(__dirname, "./config/tsconfig.json")
-      }),
+      // new ForkTsCheckerWebpackPlugin({
+      //   tsconfig: path.resolve(__dirname, "./config/tsconfig.json")
+      // }),
       new webpack.DefinePlugin({
         "process.env": {
           NODE_ENV: JSON.stringify(NODE_ENV)

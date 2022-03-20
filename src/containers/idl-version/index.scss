@@ -1,0 +1,16 @@
+.tableWrapper {
+  .ant-btn {
+    margin-right: 8px;
+  }
+  margin-top: 16px;
+  border-radius: 8px;
+  padding: 24px 32px;
+  background: #fff;
+
+  > p {
+      display: flex;
+      color: #333;
+
+      justify-content: space-between;
+  }
+}

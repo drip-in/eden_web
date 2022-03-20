@@ -1,0 +1,45 @@
+.commonStatus {
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 28px;
+  text-align: center;
+  border-radius: 4px;
+  cursor: default;
+
+  &.init {
+    // border: 1px solid #999;
+    color: #999;
+    background: #f0f0f0;
+  }
+  &.deploying {
+      // border: 1px solid rgba(102, 194, 58, .15);
+      color: orange;
+      background: #f0f0f0;
+  }
+
+  &.idl_graying {
+      // border: 1px solid rgba(47, 136, 255, .15);
+      color: #2f88ff;
+      background: #f0f0f0;
+  }
+  &.success {
+      // border: 1px solid rgba(244, 88, 88, .15);
+      color: #66c23a;
+      background: #f0f0f0;
+  }
+
+  &.canceled {
+      // border: 1px solid #dadfe3;
+      color: #f45858;
+      background: #f0f0f0;
+  }
+  &.rollback {
+    // border: 1px solid #dadfe3;
+      color: #7418b1;
+      background: #f0f0f0;
+  }
+}
