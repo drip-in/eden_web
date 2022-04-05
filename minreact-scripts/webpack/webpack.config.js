@@ -113,12 +113,14 @@ module.exports = (env = {}) => {
       historyApiFallback: true,
       proxy: projectInfo.proxy || {},
       host: "0.0.0.0",
-      disableHostCheck: true
+      disableHostCheck: true,
+      clientLogLevel: "error"
     },
     mode: NODE_ENV,
     stats: prodMode ? {
+      warnings: false,
       warningsFilter: (warning) => /Conflicting order between/gm.test(warning)
-    } : {},
+    } : {warnings: false},
     module: {
       rules: [
         // All output '.js' files will  re-processed by 'source-map-loader' and 'eslint-loader'.
@@ -246,27 +248,39 @@ module.exports = (env = {}) => {
           ]
         },
         {
-          test: /\.(sa|sc)ss$/,
+          test: /\.scss$/,
           use: [
             {
-              loader: prodMode ? MiniCssExtractPlugin.loader : "style-loader"
+                loader: prodMode ? MiniCssExtractPlugin.loader : 'style-loader'
             },
             {
-              loader: "css-loader"
+                loader: 'typings-for-css-modules-loader',
+                options: {
+                    modules: true,
+                    namedExport: true,
+                    camelCase: true,
+                    localIdentName: '[local]--[hash:base64:6]',
+                    exportOnlyLocals: true // ## 见issue: https://github.com/Jimdo/typings-for-css-modules-loader/issues/89
+                }
             },
             {
-              loader: "postcss-loader",
-              options: {
-                ident: "postcss",
-                plugins: () => [
-                  require('autoprefixer')({
-                      overrideBrowserslist: ['last 2 version', '>1%', 'ios 7']
-                  })
-                ]
-              }
+                loader: 'postcss-loader',
+                options: {
+                    ident: 'postcss',
+                    plugins: [
+                        require('autoprefixer')({
+                            add: prodMode,
+                            // react doesn't support ie < 11 anyway, so why css?
+                            browsers: ['>0.25%', 'not dead', 'not ie <= 11', 'not op_mini all']
+                        })
+                    ]
+                }
             },
             {
-              loader: "sass-loader"
+                loader: 'sass-loader',
+                options: {
+                    javascriptEnabled: true
+                }
             }
           ]
         },

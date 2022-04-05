@@ -62,7 +62,7 @@ switch (script) {
           process.exit(1);
         });
     }
-    detectPort(8080);
+    detectPort(8081);
     break;
   }
 
