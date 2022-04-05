@@ -13,16 +13,16 @@
     "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     },
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "noImplicitReturns": true,
     "importHelpers": true,
-    "noUnusedLocals": true,
+    "noUnusedLocals": false,
     "esModuleInterop": true,
     "noFallthroughCasesInSwitch": true,
-    "noUnusedParameters": true,
+    "noUnusedParameters": false,
     "noEmit": true
   },
   // "include": ["./src/**/*"],
