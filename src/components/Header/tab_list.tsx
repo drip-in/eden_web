@@ -27,8 +27,6 @@ interface State {
 class TabList extends Component<RouteComponentProps & IProps, State> {
   constructor(props: RouteComponentProps & IProps) {
     super(props);
-    console.log(Tabs["/"])
-    console.log(Tabs["'/explore'"])
     this.state = {
       selectedTab: props.location.pathname,  
       tabs: [
