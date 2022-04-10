@@ -1,46 +1,75 @@
 import React, { Component } from "react";
 import { hot } from "react-hot-loader";
-// import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Route, RouteComponentProps } from "react-router-dom";
+import { Provider} from 'mobx-react';
+import { Helmet } from "react-helmet";
 
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { PermissionKeys, PermissionStruct, UserInfo, UserInfoApis } from "@/apis/user_info";
+import { createTheme, Theme } from '@/composables/theme'
+import { stores } from  '@/stores/index';
 
 // import About from "./pages/About";
-import Home from "./pages/Home";
-import Header from './components/Header'
+import Header from '@/components/Header'
+import Routes from "./routes";
 
-import IdlVersion from '@/containers/idl-version';
-import IdlDeploy from '@/containers/idl-deploy';
-import IdlExecution from '@/containers/idl-execution';
-import ApiConfig from '@/containers/api-config';
-const IS_DEV = process.env.NODE_ENV !== 'production';
-const basename = IS_DEV ? '/' : '/insights/lite'
+import '@/styles/app.scss';
+import './App.css';
+import commonStyles from "@/styles/common.module.scss";
 
-export const Context = React.createContext({
-  loading: false,
-  toggle: (loading: boolean) => {}, 
-});
+const basename = '/'
+
+export interface ICreatorContext {
+  theme: Theme;
+  device: string;
+  language: string;
+  userAgent: string;
+
+  userInfo: UserInfo;
+  permissionList: PermissionStruct[];
+}
+
+export interface IState {
+  context: ICreatorContext;
+  userInfo: UserInfo;
+  loading: boolean;
+};
+
+
 class App extends Component {
-  state = {
+  state: IState = {
+    context: {
+      theme: Theme.Light,
+      device: "desktop",
+      language: "",
+      userAgent: "",
+      userInfo: undefined,
+      permissionList: [],
+    },
+    userInfo: undefined,
     loading: false,
-    toggle: (loading) => {
-        this.setState({ loading });
-    }
+  };
+
+  componentDidMount() {
+    stores.userInfoStore.fetchUserInfo()
   }
+
   render() {
     return (
-      <Router basename={basename}>
-        <div className="Router">
-            <Context.Provider value={this.state}>
-              <div className="Content">
-                <Route exact path="/" component={Home} />
-                <Route path="/idl/version" exact component={IdlVersion} />
-                <Route path="/idl/deploy" exact component={IdlDeploy} />
-                <Route path="/idl/execution" exact component={IdlExecution} />
-                <Route path="/idl/config" exact component={ApiConfig} />
-              </div>
-            </Context.Provider>
-        </div>
-      </Router>
+      <>
+        <Helmet>
+          <html lang="cn" data-device={this.state.context.device} />
+          <body />
+          <title>deesta.cn</title>
+        </Helmet>
+        <Router basename={basename}>
+          <div className={commonStyles.appContainer}>
+            <Provider store = {stores}>
+              <Route path="/" render={(props) => <Header {...props} />} />
+              <Routes />
+            </Provider>
+          </div>
+        </Router>
+      </>
     );
   }
 }
