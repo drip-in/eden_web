@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import LoadPage from './utils/LoadPage';
-import styles from "@/common/styles/base.scss";
+import styles from "@/styles/base.scss";
 
 function asyncComponent(getComponent) {
   return class AsyncComponent extends React.Component {
@@ -40,7 +40,7 @@ export default class Routes extends Component {
   render() {
       return (
         <div className={styles.wrapper}>
-          <Route path="/idl/deploy" exact component={IdlDeploy} />
+          <Route path="/idl/deploy" exact component={(props) => <IdlDeploy {...props} />} />
           {/* <Route path="/idl/execution" exact component={IdlExecution} /> */}
         </div>
       );

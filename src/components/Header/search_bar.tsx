@@ -3,7 +3,7 @@ import { Component } from "react";
 import { RouteComponentProps } from "react-router";
 import { Dropdown } from "antd";
 
-import styles from './index.scss';
+import styles from './index.module.scss';
 
 interface IProps {
   // userInfo: UserInfo;

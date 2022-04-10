@@ -2,7 +2,7 @@ import * as React from "react";
 import { Component } from "react";
 import { RouteComponentProps } from "react-router";
 
-import styles from './index.scss';
+import styles from './index.module.scss';
 
 enum Tabs {
   HOMEPAGE = '/',

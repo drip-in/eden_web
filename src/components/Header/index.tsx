@@ -1,38 +1,32 @@
 import * as React from "react";
 import { Component } from "react";
 import { RouteComponentProps } from "react-router";
-
+import { observer, inject } from 'mobx-react';
 import { Dropdown, Avatar } from "antd";
+
 import TabList from "./tab_list";
 import SearchBar from "./search_bar";
 
 import logo from "@/assets/react-js-development.png";
-import avatar from "@/assets/avatar.png";
 
+import { stores } from '@/stores/index';
 import { UserInfoApis } from "@/apis";
 import { UserInfo } from "@/apis/user_info";
 
-import commonStyles from "@/common/styles/base.scss";
-import styles from './index.scss';
-
+import commonStyles from "@/styles/common.module.scss";
+import styles from './index.module.scss';
 
 export interface IProps {
   // userInfo: UserInfo;
 }
 
 interface State {
-  userInfo: UserInfo;
   loading: boolean;
 };
 
+@observer
 class Header extends Component<IProps & RouteComponentProps, State> {
   state: State = {
-    userInfo: {
-      avatar_url: avatar,
-      level: 1,
-      eden_uid: "123",
-      nick_name: "turling",
-    },
     loading: false
   }
   componentDidMount(): void {
@@ -43,11 +37,11 @@ class Header extends Component<IProps & RouteComponentProps, State> {
   };
 
   render() {
-    const { userInfo } = this.state;
+    const { userInfo } = stores.userInfoStore;
     return userInfo && (
       <div>
         <header className={styles.appHeader}>
-          <div className={`${styles.headerContainer} ${commonStyles.centeredFlex}`} style={{ justifyContent: "space-between" }}>
+          <div className={`${styles.headerContainer} ${commonStyles.centeredFlex} header-container`} style={{ justifyContent: "space-between" }}>
             <a className={styles.logo} href="/hot">
               <img src={logo} />
               滴石社区

@@ -11,4 +11,6 @@ declare module '*.svg' {
   export default content;
 }
 
+declare module "js-cookie";
+declare module 'ua-parser-js';
 

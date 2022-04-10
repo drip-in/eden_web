@@ -1,66 +1,75 @@
 import React, { Component } from "react";
 import { hot } from "react-hot-loader";
-// import { BrowserRouter as Router } from "react-router-dom";
-
 import { BrowserRouter as Router, Route, RouteComponentProps } from "react-router-dom";
-import { UserInfoApis } from "@/apis";
-import { UserInfo } from "@/apis/user_info";
+import { Provider} from 'mobx-react';
+import { Helmet } from "react-helmet";
+
+import { PermissionKeys, PermissionStruct, UserInfo, UserInfoApis } from "@/apis/user_info";
+import { createTheme, Theme } from '@/composables/theme'
+import { stores } from  '@/stores/index';
 
 // import About from "./pages/About";
 import Header from '@/components/Header'
 import Routes from "./routes";
-import IdlDeploy from '@/pages/idl-deploy';
-import IdlExecution from '@/pages/idl-execution';
 
+import '@/styles/app.scss';
 import './App.css';
-import styles from "@/common/styles/base.scss";
+import commonStyles from "@/styles/common.module.scss";
 
 const basename = '/'
 
-export interface IState {
+export interface ICreatorContext {
+  theme: Theme;
+  device: string;
+  language: string;
+  userAgent: string;
+
   userInfo: UserInfo;
-  permissionMap: any;
+  permissionList: PermissionStruct[];
+}
+
+export interface IState {
+  context: ICreatorContext;
+  userInfo: UserInfo;
   loading: boolean;
-  changeValue: (key: string, value: any) => void;
-  toggleLoading: (loading: boolean) => void;
-  updateSelectedTab: (selectedTab: string) => void;
 };
 
-export const Context = React.createContext({
-  loading: false,
-  changeValue: (key: string, value: any) => { },
-  toggleLoading: (loading: boolean) => { }
-});
+
 class App extends Component {
   state: IState = {
+    context: {
+      theme: Theme.Light,
+      device: "desktop",
+      language: "",
+      userAgent: "",
+      userInfo: undefined,
+      permissionList: [],
+    },
     userInfo: undefined,
-    permissionMap: undefined,
     loading: false,
-    changeValue: (key, value) => {
-      this.setState({ [key]: value });
-    },
-    toggleLoading: loading => {
-      this.setState({ loading });
-    },
-    updateSelectedTab: selectedTab => {
-      this.setState({ selectedTab })
-    },
   };
+
+  componentDidMount() {
+    stores.userInfoStore.fetchUserInfo()
+  }
+
   render() {
     return (
-      <Router basename={basename}>
-        <div className={styles.appContainer}>
-            <Context.Provider value={this.state}>
-              <Route path="/" render={(props: RouteComponentProps) => <Header {...props} />} />
+      <>
+        <Helmet>
+          <html lang="cn" data-device={this.state.context.device} />
+          <body />
+          <title>deesta.cn</title>
+        </Helmet>
+        <Router basename={basename}>
+          <div className={commonStyles.appContainer}>
+            <Provider store = {stores}>
+              <Route path="/" render={(props) => <Header {...props} />} />
               <Routes />
-              {/* <div className="Content">
-                <Route path="/idl/deploy" exact component={IdlDeploy} />
-                <Route path="/idl/execution" exact component={IdlExecution} />
-              </div> */}
-
-            </Context.Provider>
-        </div>
-      </Router>
+            </Provider>
+          </div>
+        </Router>
+      </>
     );
   }
 }

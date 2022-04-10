@@ -15,17 +15,10 @@
 import * as React from "react";
 import { render } from "react-dom";
 
-import { createTheme, Theme } from '@/composables/theme'
 
 import App from "./App";
 
 // const root = document.createElement('div')
 // document.body.appendChild(root)
-
-// export interface ICreatorContext {
-//   theme: Theme
-//   language: string
-//   userAgent: string
-// }
 
 render(<App />, document.getElementById("root"));

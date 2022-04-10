@@ -1,0 +1,170 @@
+@import "./color.scss";
+@import './variables.scss';
+
+.appContainer {
+  min-width: $container-width;
+}
+
+.centeredFlex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper {
+  display: flex;
+  margin: auto;
+  margin-top: 86px;
+  width: 1216px;
+  margin-bottom: 24px; // padding-bottom: 100px;
+
+  >* {
+    align-self: flex-start;
+  }
+}
+
+// container
+.content {
+  width: 1000px;
+  background: #fff;
+  z-index: 10;
+  position: relative; // padding: 20px;
+  border-radius: 8px;
+}
+
+// @media only screen and (max-width: 1650px) {
+//   .content {
+//     margin-left: 220px;
+//   }
+// }
+// component styles
+.loadingIndicator {
+  width: 10%;
+  transition: all 0.5s linear;
+  height: 3px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1005;
+  background-color: #7fea7f;
+  animation-name: indicatorExpand;
+  animation-duration: 10s;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+}
+
+.noScrollBar {
+  :global {
+    ::-webkit-scrollbar {
+      width: 0px;
+      /* remove scrollbar space */
+      background: transparent;
+      /* optional: just make scrollbar invisible */
+    }
+
+    /* optional: show position indicator in red */
+    ::-webkit-scrollbar-thumb {
+      background: #ff0000;
+    }
+  }
+
+  // >div {
+}
+
+.videoBlock {
+  // width: calc(20%);
+  width: 25%; // height: 350px;
+  /* margin: 10px; */
+  display: inline-block;
+  border: 8px solid transparent;
+  vertical-align: top;
+  position: relative;
+
+  >span {
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    background-color: $linkcolor;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border-radius: 4px;
+    color: #fff;
+    z-index: 10;
+  }
+
+  video {
+    width: 100%; // height: 133px;
+  }
+
+  .imgItem {
+    width: 100%;
+    height: 390px;
+    background-size: cover;
+    border-radius: 8px;
+    background-position: center;
+  }
+
+  p:first-of-type {
+    font-size: 14px;
+    color: #333333;
+    font-weight: bold;
+    margin-top: 24px;
+  }
+
+  p {
+    margin: 5px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 14px;
+    color: #bbb;
+  }
+}
+
+@keyframes indicatorExpand {
+  10% {
+    width: 20%;
+  }
+
+  20% {
+    width: 30%;
+  }
+
+  20% {
+    width: 30%;
+  }
+
+  30% {
+    width: 40%;
+  }
+
+  40% {
+    width: 50%;
+  }
+
+  50% {
+    width: 60%;
+  }
+
+  60% {
+    width: 70%;
+  }
+
+  70% {
+    width: 80%;
+  }
+
+  80% {
+    width: 90%;
+  }
+
+  90% {
+    width: 100%;
+  }
+
+  100% {
+    width: 100%;
+  }
+}
