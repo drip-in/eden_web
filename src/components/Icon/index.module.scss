@@ -1,0 +1,16 @@
+.icon {
+  position: absolute;
+  left:0px;
+  right: 0px;
+  top:0px;
+  bottom: 0px;
+  margin: auto;
+  width: 2rem;
+  >i {
+    &:hover {
+      color: #76839b;
+    }
+    color: #8590a6;
+    line-height: 30px;
+  }
+}

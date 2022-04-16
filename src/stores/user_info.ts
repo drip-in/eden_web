@@ -13,12 +13,13 @@ class UserInfoStore {
   }
 
   fetchUserInfo() {
-    this.userInfo = {
-      avatar_url: avatar,
-      level: 1,
-      eden_uid: "123",
-      nick_name: "turling",
-    };
+    // this.userInfo = {
+    //   avatar_url: avatar,
+    //   level: 1,
+    //   eden_uid: "123",
+    //   nick_name: "turling",
+    // };
+    this.userInfo = undefined
   }
 }
 

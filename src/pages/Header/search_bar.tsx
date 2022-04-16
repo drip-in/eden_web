@@ -13,6 +13,7 @@ interface State {
   searchInput: string;
   placeholder: string;
   inputLimit: number;
+  onFocus: boolean;
 };
 
 class SearchBar extends Component<RouteComponentProps & IProps, State> {
@@ -22,6 +23,7 @@ class SearchBar extends Component<RouteComponentProps & IProps, State> {
       searchInput: "", 
       placeholder: "搜索",
       inputLimit: 20,
+      onFocus: false,
     };
   }
 
@@ -37,18 +39,27 @@ class SearchBar extends Component<RouteComponentProps & IProps, State> {
 
   onChange = e => {}
 
+  onFocus = e => {
+    this.setState({ onFocus: true })
+  }
+
+  onBlur = e => {
+    this.setState({ onFocus: false })
+  }
+
   render() {
-    const { searchInput, inputLimit, placeholder } = this.state
+    const { searchInput, inputLimit, placeholder, onFocus } = this.state
     return (
       <form className={styles.searchBar}>
         <Dropdown
+          trigger={["click"]}
           overlay={this.renderDropdownMenu()}
         >
-          <div className={styles.inputWrapper}>
-            <input type='text' value={searchInput} placeholder={placeholder} maxLength={inputLimit || Infinity} onChange={this.onChange} />
+          <div className={`${styles.inputWrapper} ${onFocus ? styles.focused : ""}`}>
+            <input type='text' value={searchInput} placeholder={placeholder} maxLength={inputLimit || Infinity} onChange={this.onChange} onFocus={this.onFocus} onBlur={this.onBlur} />
             <div className={styles.searchIconWrapper}>
               <a className={styles.icon}>
-                <i className="iconfont icon-sousuotubiao" />
+                <i className={`iconfont icon-a-1-sousuo ${onFocus ? styles.active : ""}`} />
               </a>
             </div>
           </div>

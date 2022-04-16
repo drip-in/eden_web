@@ -9,11 +9,11 @@ import { createTheme, Theme } from '@/composables/theme'
 import { stores } from  '@/stores/index';
 
 // import About from "./pages/About";
-import Header from '@/components/Header'
+import Header from '@/pages/Header'
 import Routes from "./routes";
 
-import '@/styles/app.scss';
 import './App.css';
+import '@/styles/app.scss';
 import commonStyles from "@/styles/common.module.scss";
 
 const basename = '/'
@@ -57,7 +57,7 @@ class App extends Component {
     return (
       <>
         <Helmet>
-          <html lang="cn" data-device={this.state.context.device} />
+          <html lang="cn" data-device={this.state.context.device} data-theme={this.state.context.theme} />
           <body />
           <title>deesta.cn</title>
         </Helmet>

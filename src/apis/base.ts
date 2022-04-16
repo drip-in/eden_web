@@ -11,7 +11,11 @@ import { PRODUCTION_DOMAIN, IS_DEV } from "../constants";
 
 const host = IS_DEV ? "" : PRODUCTION_DOMAIN;
 
-
+export interface baseResponseStruct {
+  status_code: number;
+  status_msg?: string;
+  status_message?: string;
+}
 
 const instance = axios.create({
   baseURL: host,

@@ -1,8 +1,10 @@
 import {baseReqInstance} from ".";
 import { BaseResp } from "./interfaces";
+import { baseResponseStruct } from "./base";
 
 const urlMap = {
-  userLogout: '/eden/v1/bluev/logout',
+  userLogin: '/eden/v1/login',
+  userLogout: '/eden/v1/logout',
   fetchContactConfig: '/eden/v1/profile/module/detail/',
   updateContactInfo: '/eden/v1/profile/module/update/',
   fetchVerifyCode: '/eden/v1/notify/verify/',
@@ -68,11 +70,6 @@ export enum VerifyType {
   SMS_CODE = 1,
   CAPTCHA = 2,
   VOICDE_CODE = 3
-}
-interface baseResponseStruct {
-  status_code: number;
-  status_msg?: string;
-  status_message?: string;
 }
 
 export interface ContactItemStruct {
@@ -159,6 +156,13 @@ interface GroupListResponse extends BaseResp {
 }
 
 export const UserInfoApis = {
+  async userLogin(params) {
+    return baseReqInstance<baseResponseStruct>({
+      url: `${urlMap.userLogin}`,
+      method: 'get',
+      data: params,
+    });
+  },
   async userLogout() {
     return baseReqInstance<baseResponseStruct>({
       url: `${urlMap.userLogout}`,
