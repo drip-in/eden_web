@@ -1,10 +1,13 @@
 import {baseReqInstance} from ".";
 import { BaseResp } from "./interfaces";
 import { baseResponseStruct } from "./base";
+import { useParams } from "react-router";
 
 const urlMap = {
-  userLogin: '/eden/v1/login',
-  userLogout: '/eden/v1/logout',
+  sendCaptcha: '/eden/v1/user/captcha/send',
+  userLogin: '/eden/v1/user/login',
+  userLogout: '/eden/v1/user/logout',
+  getUserInfo: '/eden/v1/user/info',
   fetchContactConfig: '/eden/v1/profile/module/detail/',
   updateContactInfo: '/eden/v1/profile/module/update/',
   fetchVerifyCode: '/eden/v1/notify/verify/',
@@ -34,12 +37,24 @@ export interface PermissionStruct {
   customization?: string; // 权限定制化信息
 }
 
+enum UserLevel {
+  Normal = 1,
+}
+
+enum UserStatus {
+  NORMAL  = 1,
+  DELETED = 2,
+  BANNED  = 3,
+}
+
 export interface UserInfo {
-  avatar_url: string;
-  level: number;
-  eden_uid: string;
-  nick_name: string;
-  role_infos?: Array<{ id: number; key: string; name: string }>;
+  user_name: string;
+  telephone?: string;
+  email?: string;
+  nick_name?: string;
+  avatar_url?: string;
+  level: UserLevel;
+  user_status: UserStatus;
   permission_map?: { [key in PermissionKeys]: PermissionStruct };
 }
 
@@ -70,6 +85,30 @@ export enum VerifyType {
   SMS_CODE = 1,
   CAPTCHA = 2,
   VOICDE_CODE = 3
+}
+
+export enum LoginAuthType {
+  PASSWORD = 1,
+  CAPTCHA  = 2,
+  WEIXIN   = 3,
+  GITHUB   = 4,
+}
+
+interface SendCaptchaParam {
+  email: string;
+}
+interface LoginParam {
+  login_auth_type: LoginAuthType;
+  identifier: string;
+  credential: string;
+}
+
+interface LoginResp {
+  token?: string;
+}
+
+interface GetUserInfoResp {
+  user_info?: UserInfo;
 }
 
 export interface ContactItemStruct {
@@ -156,17 +195,31 @@ interface GroupListResponse extends BaseResp {
 }
 
 export const UserInfoApis = {
-  async userLogin(params) {
+  async sendCaptcha(params: SendCaptchaParam) {
     return baseReqInstance<baseResponseStruct>({
-      url: `${urlMap.userLogin}`,
-      method: 'get',
+      url: `${urlMap.sendCaptcha}`,
+      method: 'post',
       data: params,
+    });
+  },
+  async userLogin(params: LoginParam) {
+    return baseReqInstance<baseResponseStruct & LoginResp>({
+      url: `${urlMap.userLogin}`,
+      method: 'post',
+      data: params,
+    });
+  },
+  async getUserInfo(params?) {
+    return baseReqInstance<baseResponseStruct & GetUserInfoResp>({
+      url: `${urlMap.getUserInfo}`,
+      method: 'get',
+      notNotifyOnError: params.notNotifyOnError
     });
   },
   async userLogout() {
     return baseReqInstance<baseResponseStruct>({
       url: `${urlMap.userLogout}`,
-      method: 'get',
+      method: 'post',
       // data: params
     });
   },

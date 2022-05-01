@@ -50,7 +50,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    stores.userInfoStore.fetchUserInfo()
+    stores.userInfoStore.fetchUserInfo({ notNotifyOnError: true })
   }
 
   render() {

@@ -1,11 +1,12 @@
 @import '@/styles/variables.scss';
+@import '@/styles/color.scss';
 
 .app-header {
   position: relative;
   z-index: 100;
   box-shadow: 0 1px 9px 0 rgba(0, 0, 0, .12);
   // min-width: 1000px;
-  height: 54px;
+  height: 72px;
   overflow: hidden;
   background: #fff;
   &.fixed {
@@ -106,7 +107,8 @@
   flex-grow: 1;
   position: relative;
   height: 36px;
-  max-width: 482px;
+  max-width: 400px;
+  // min-width: 300px;
   margin-right: 10px;
   .input-wrapper {
     position: relative;
@@ -115,15 +117,17 @@
     overflow: hidden;
     align-items: center;
     box-sizing: border-box;
-    border: 1px solid #ced4da;
-    border-radius: 99px;
     width: 100%;
+    border: 1px solid #ced4da;
+    border-radius: $border-radius-medium;
     height: 36px;
     padding: 4px;
     padding-left: 16px;
     padding-right: 0;
     font-size: 14px;
+    background-color: $gray-2;
     &.focused {
+      // width: 482px;
       border: 1px solid $primary-lighter;
       box-shadow: 0 0 4px 0 $primary-lighter;
       // background-image: linear-gradient(180deg,$primary-translucent,#fff);
@@ -260,14 +264,13 @@
   // // height: 124px;
   // overflow: hidden;
   .title {
-    margin-top: 24px;
     width: 100%;
     // text-align: center;
     color: #161823;
     font-weight: 500;
-    font-size: 17px;
-    line-height: 24px;
-    margin-bottom: 16px;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    margin-bottom: 2rem;
   }
 
   .input-group {
@@ -312,11 +315,6 @@
         height: 24px;
         // background: url('../assets/empty-dark.png') center/contain no-repeat;
       }
-      .email-note {
-        margin-top: 3px;
-        line-height: 18px;
-        color: #6c757d;
-      }
       // >p {
       //   text-align: center;
       //   margin-top: 3px;
@@ -325,15 +323,89 @@
       //   color: #FE3824;
       //   // opacity: 0.75;
       // }
-    }
+      .input-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        width: 100%;
+        // padding: 10px 12px 12px;
+        box-sizing: border-box;
+        height: 40px;
+        background: rgba(190, 190, 197, 0.06);
+        border: 1px solid #e9e9e9;
+        border-radius: 4px;
+        font-size: 15px;
+        margin-bottom: 8px;
+        &.input-focused {
+          border: 1px solid $primary-lighter;
+          outline: none;
+        }
+        > input {
+          display: inline-block;
+          width: calc(100% - 80px);
+          font-size: 15px;
+          height: 100%;
+          padding: 11px 12px;
+          line-height: 17px;
+          border: none;
+          color: #161823;
+          background: transparent;
+          caret-color: $primary-translucent;
+          outline: none;
     
+          &::placeholder {
+            font-size: 15px;
+            line-height: 18px;
+            color: rgba(22, 24, 35, 0.5);
+          }
+        }
+    
+        // > a {
+        //   position: absolute;
+        //   top: 12px;
+        //   right: 50px;
+        //   width: 16px;
+        //   height: 16px;
+        //   background: url("../assets/empty.png") center/contain no-repeat;
+        // }
+        .timing {
+          width: 72px;
+          text-align: right;
+          margin-right: 12px;
+          font-size: 14px;
+          line-height: 16px;
+          color: $primary;
+          cursor: pointer;
+        }
+      }
+    }
+    .bottom-items {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .text-end {
+      font-size: 1.2rem;
+      line-height: 16px;
+    }
+    .err-msg {
+      margin-top: 0.25rem;
+      line-height: 18px;
+      color: $err-red;
+    }
+    .email-note {
+      margin-top: 1rem;
+      line-height: 18px;
+      color: #6c757d;
+    }
   }
   
   .login-nav {
     margin-top: 20px;
     text-align: center;
     .login-mode {
-      font-size: 1rem;
+      font-size: 1.2rem;
       margin-left: 1rem;
       margin-right: 1rem;
       color: $primary;
@@ -345,5 +417,10 @@
       border-left: 1px solid #dee2e6;
     }
   }
+}
+
+.clickable {
+  color: $primary;
+  cursor: pointer;
 }
 

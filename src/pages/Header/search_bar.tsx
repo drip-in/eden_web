@@ -47,6 +47,7 @@ class SearchBar extends Component<RouteComponentProps & IProps, State> {
     this.setState({ onFocus: false })
   }
 
+  // Dropdown组件有个bug: 所包裹的元素不能动态修改宽度，否则会死循环导致页面卡住（具体原因不明）
   render() {
     const { searchInput, inputLimit, placeholder, onFocus } = this.state
     return (

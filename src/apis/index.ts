@@ -1,7 +1,7 @@
 /**
  * @module apis
  */
-export { baseReqInstance } from "./base";
+export { baseReqInstance, CSRF_TOKEN } from "./base";
 
 export {
   UserInfoApis,

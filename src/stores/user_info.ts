@@ -1,5 +1,5 @@
-import { observable, action, computed, makeObservable} from "mobx";
-import { UserInfo } from "@/apis/user_info";
+import { observable, action, computed, makeObservable, runInAction } from "mobx";
+import { UserInfo, UserInfoApis } from "@/apis/user_info";
 import avatar from "@/assets/avatar.png";
 
 class UserInfoStore {
@@ -12,14 +12,19 @@ class UserInfoStore {
     });
   }
 
-  fetchUserInfo() {
-    // this.userInfo = {
-    //   avatar_url: avatar,
-    //   level: 1,
-    //   eden_uid: "123",
-    //   nick_name: "turling",
-    // };
-    this.userInfo = undefined
+  fetchUserInfo(params) {
+    return UserInfoApis
+    .getUserInfo(params)
+    .then(
+      resp => {
+        if (resp.status_code == 0) {
+          runInAction(() => {
+            this.userInfo = resp.user_info;
+            this.userInfo.avatar_url = avatar  
+          })
+        }
+      }
+    );
   }
 }
 

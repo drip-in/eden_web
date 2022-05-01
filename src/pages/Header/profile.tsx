@@ -3,7 +3,7 @@ import { Component } from "react";
 import { RouteComponentProps } from "react-router";
 import { Dropdown, Avatar } from "antd";
 
-import { UserInfoApis } from "@/apis";
+import { UserInfoApis, CSRF_TOKEN } from "@/apis";
 import { UserInfo } from "@/apis/user_info";
 
 import styles from './index.module.scss';
@@ -12,7 +12,7 @@ import styles from './index.module.scss';
 interface MenuItemStruct {
   itemIconClass: string;
   itemName: string;
-  clickFunc?: () => {};
+  clickFunc?: () => void;
 }
 
 const MenuItem: React.FC<MenuItemStruct> = props => (
@@ -60,12 +60,14 @@ class Profile extends Component<RouteComponentProps & IProps, State> {
         {
           itemIconClass: "icon-a-73-tuichu",
           itemName: "退出",
+          clickFunc: this.logout
         },
       ]
     };
   }
 
   logout = () => {
+    window.localStorage.setItem(CSRF_TOKEN, "");
     UserInfoApis.userLogout();
   };
 

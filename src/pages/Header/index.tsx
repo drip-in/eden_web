@@ -10,11 +10,12 @@ import Notification from "./notification";
 import Profile from "./profile";
 import LoginPanel from "./login_panel";
 
-import logo from "@/assets/react-js-development.png";
+import logo from "@/assets/logo.png";
 import deesta from "@/assets/deesta.png";
 
 import { stores } from '@/stores/index';
-import { UserInfoApis } from "@/apis";
+import { UserInfoApis, CSRF_TOKEN } from "@/apis";
+import { UserInfo, LoginAuthType } from "@/apis/user_info";
 
 import commonStyles from "@/styles/common.module.scss";
 import styles from './index.module.scss';
@@ -47,14 +48,15 @@ class Header extends Component<IProps & RouteComponentProps, State> {
 
   onLogin = (authType, identifier, credential) => {
     return UserInfoApis.userLogin({
-      authType,
+      login_auth_type: authType,
       identifier,
       credential
     }).then(
       resp => {
         if (resp.status_code == 0) {
           this.setState({ isModalVisible: false })
-          stores.userInfoStore.fetchUserInfo()
+          window.localStorage.setItem(CSRF_TOKEN, resp.token);
+          stores.userInfoStore.fetchUserInfo({})
         }
         return resp
       }
