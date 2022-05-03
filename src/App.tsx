@@ -31,7 +31,7 @@ export interface ICreatorContext {
 export interface IState {
   context: ICreatorContext;
   userInfo: UserInfo;
-  loading: boolean;
+  loaded: boolean;
 };
 
 
@@ -46,14 +46,19 @@ class App extends Component {
       permissionList: [],
     },
     userInfo: undefined,
-    loading: false,
+    loaded: false,
   };
 
   componentDidMount() {
-    stores.userInfoStore.fetchUserInfo({ notNotifyOnError: true })
+    stores.userInfoStore
+    .fetchUserInfo({ notNotifyOnError: true })
+    .then(() => {
+      this.setState({ loaded: true })
+    })
   }
 
   render() {
+    const { loaded } = this.state
     return (
       <>
         <Helmet>
@@ -61,14 +66,16 @@ class App extends Component {
           <body />
           <title>deesta.cn</title>
         </Helmet>
-        <Router basename={basename}>
-          <div className={commonStyles.appContainer}>
-            <Provider store = {stores}>
-              <Route path="/" render={(props) => <Header {...props} />} />
-              <Routes />
-            </Provider>
-          </div>
-        </Router>
+        {loaded && (
+          <Router basename={basename}>
+            <div className={commonStyles.appContainer}>
+              <Provider store = {stores}>
+                <Route path="/" render={(props) => <Header {...props} />} />
+                <Routes />
+              </Provider>
+            </div>
+          </Router>
+        )}
       </>
     );
   }

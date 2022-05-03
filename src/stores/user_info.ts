@@ -26,6 +26,10 @@ class UserInfoStore {
       }
     );
   }
+
+  resetUserInfo() {
+    this.userInfo = null
+  }
 }
 
 export const userInfoStore = new UserInfoStore();

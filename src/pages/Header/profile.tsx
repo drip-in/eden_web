@@ -5,6 +5,7 @@ import { Dropdown, Avatar } from "antd";
 
 import { UserInfoApis, CSRF_TOKEN } from "@/apis";
 import { UserInfo } from "@/apis/user_info";
+import { stores } from '@/stores/index';
 
 import styles from './index.module.scss';
 
@@ -68,7 +69,11 @@ class Profile extends Component<RouteComponentProps & IProps, State> {
 
   logout = () => {
     window.localStorage.setItem(CSRF_TOKEN, "");
-    UserInfoApis.userLogout();
+    UserInfoApis
+    .userLogout()
+    .then(() => {
+      stores.userInfoStore.resetUserInfo()
+    });
   };
 
   renderDropdownMenu = () => {

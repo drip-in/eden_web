@@ -9,6 +9,7 @@ import { baseResponseStruct } from "@/apis/base";
 
 import styles from './index.module.scss';
 
+const CAPTCHA_ID = "647f5ed2ed8acb4be36784e01556bb71"
 
 interface IProps {
   onLogin: (authType, identifier, credential) => Promise<baseResponseStruct>
@@ -23,6 +24,7 @@ interface State {
   remainSecond?: number;
   errMsg?: string;
   loading?: boolean;
+  verified?: boolean;  // 极验校验通过
   // profileMenus: MenuItemStruct[];
 };
 
@@ -39,6 +41,23 @@ class LoginPanel extends Component<RouteComponentProps & IProps, State> {
   }
 
   timeInterval = null;
+  captchaObj = null;
+
+  componentDidMount(): void {
+    window.initGeetest4({
+      captchaId: CAPTCHA_ID,
+      product: 'bind'
+    }, (captchaObj) => {
+      captchaObj.onReady(
+        () => {
+          //验证码ready之后才能调用showCaptcha方法显示验证码
+          this.captchaObj = captchaObj
+        }
+      ).onError(function(){
+        console.log("initGeetest4 fail")
+      })
+    });
+  }
 
   componentWillUnmount() {
     clearInterval(this.timeInterval)
@@ -99,34 +118,44 @@ class LoginPanel extends Component<RouteComponentProps & IProps, State> {
   }
 
   handleVerify = () => {
-    const { email, remainSecond, loading } = this.state;
+    const { email, remainSecond, loading, verified } = this.state;
     if (!loading && remainSecond === 0 && email.length > 0) {
-      this.setState({ loading: true, errMsg: "" });
-      UserInfoApis.sendCaptcha({
-          email,
-      }).then(
-        resp => {
-          if (resp.status_code === 0) {
-            this.setState(
-              { remainSecond: 60, loading: false },
-              () => {
-                if (this.timeInterval) {
-                    clearInterval(this.timeInterval);
-                }
-                this.timeInterval = setInterval(() => {
-                    const { remainSecond } = this.state;
-                    if (remainSecond === 0) {
-                        clearInterval(this.timeInterval);
-                        return;
-                    }
-                    this.setState({ remainSecond: remainSecond - 1 });
-                }, 1000);
-              }
-            );
+      // 检测验证码是否ready, 验证码的onReady是否执行
+      if (!verified) {
+        this.captchaObj.showCaptcha(); //显示验证码
+        this.captchaObj.onSuccess(
+          () => {
+            this.sendCaptcha()
+            .then(() => {
+              this.setState({ verified: true })
+            })
           }
-        }
-      )
+        )
+      } else {
+        this.sendCaptcha()
+      }
     }
+  }
+
+  sendCaptcha = () => {
+    const { email } = this.state;
+    this.setState(
+      { remainSecond: 60, errMsg: "" },
+      () => {
+        if (this.timeInterval) {
+            clearInterval(this.timeInterval);
+        }
+        this.timeInterval = setInterval(() => {
+            const { remainSecond } = this.state;
+            if (remainSecond === 0) {
+                clearInterval(this.timeInterval);
+                return;
+            }
+            this.setState({ remainSecond: remainSecond - 1 });
+        }, 1000);
+      }
+    );
+    return UserInfoApis.sendCaptcha({email});
   }
 
   onLogin = () => {
@@ -161,7 +190,6 @@ class LoginPanel extends Component<RouteComponentProps & IProps, State> {
         )
         return
     }
-    
   }
 
   renderEmailLogin = () => {

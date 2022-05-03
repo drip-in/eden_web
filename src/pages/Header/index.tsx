@@ -56,7 +56,8 @@ class Header extends Component<IProps & RouteComponentProps, State> {
         if (resp.status_code == 0) {
           this.setState({ isModalVisible: false })
           window.localStorage.setItem(CSRF_TOKEN, resp.token);
-          stores.userInfoStore.fetchUserInfo({})
+          // 
+          window.location.reload()
         }
         return resp
       }
