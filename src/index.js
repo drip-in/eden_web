@@ -13,12 +13,12 @@
 // 必须在这里先引入一下 否则antd的css reset会覆盖我们的
 
 import * as React from "react";
-import { render } from "react-dom";
+import { createRoot } from 'react-dom/client';
 
 
 import App from "./App";
 
 // const root = document.createElement('div')
 // document.body.appendChild(root)
-
-render(<App />, document.getElementById("root"));
+const root = createRoot(document.getElementById("root"));
+root.render(<App />);

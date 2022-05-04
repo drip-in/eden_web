@@ -14,3 +14,11 @@ declare module '*.svg' {
 declare module "js-cookie";
 declare module 'ua-parser-js';
 
+declare interface Window {
+  initGeetest4: Function
+  // JSBridge: {
+  //     call(eventName: string, params?: any, callback?: (data: any) => void)
+  //     on(eventName: string, callback?: () => void)
+  // }
+}
+

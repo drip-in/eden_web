@@ -3,6 +3,7 @@ import { Component } from "react";
 import { RouteComponentProps } from "react-router";
 import { Dropdown } from "antd";
 
+import Icon from '@/components/Icon';
 import styles from './index.module.scss';
 
 interface IProps {
@@ -10,18 +11,14 @@ interface IProps {
 }
 
 interface State {
-  searchInput: string;
-  placeholder: string;
-  inputLimit: number;
+  messageNum: number;
 };
 
-class SearchBar extends Component<RouteComponentProps & IProps, State> {
+class Notification extends Component<RouteComponentProps & IProps, State> {
   constructor(props: RouteComponentProps & IProps) {
     super(props);
     this.state = {
-      searchInput: "", 
-      placeholder: "搜索",
-      inputLimit: 20,
+      messageNum: 49,
     };
   }
 
@@ -38,24 +35,25 @@ class SearchBar extends Component<RouteComponentProps & IProps, State> {
   onChange = e => {}
 
   render() {
-    const { searchInput, inputLimit, placeholder } = this.state
+    const { messageNum } = this.state
     return (
-      <form className={styles.searchBar}>
+      <li className={styles.notification}>
         <Dropdown
+          placement="bottomCenter"
+          trigger={["click"]}
           overlay={this.renderDropdownMenu()}
+          arrow
         >
-          <div className={styles.inputWrapper}>
-            <input type='text' value={searchInput} placeholder={placeholder} maxLength={inputLimit || Infinity} onChange={this.onChange} />
-            <div className={styles.searchIconWrapper}>
-              <a className={styles.icon}>
-                <i className="iconfont icon-sousuotubiao" />
-              </a>
+          <div className={styles.notificationWrapper}>
+            <div className={styles.iconWrapper}>
+              <Icon iconClass="icon-tongzhi" iconStyle={{fontSize: 28}} />
             </div>
+            {!!messageNum && <div className={styles.badge}>{messageNum}</div>}
           </div>
         </Dropdown>
-      </form>
+      </li>
     )
   }
 }
 
-export default SearchBar;
+export default Notification;

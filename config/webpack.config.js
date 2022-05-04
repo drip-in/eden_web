@@ -70,6 +70,7 @@ const swSrc = paths.swSrc;
 const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
+const lessRegex = /\.(less)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
 
 const hasJsxRuntime = (() => {
@@ -120,7 +121,7 @@ module.exports = function (webpackEnv) {
       }, {})
     : {};
   // common function to get style loaders
-  const getStyleLoaders = (cssOptions, preProcessor) => {
+  const getStyleLoaders = (cssOptions, preProcessor, preProcessOptions) => {
     const loaders = [
       isEnvDevelopment && require.resolve('style-loader'),
       isEnvProduction && {
@@ -184,7 +185,7 @@ module.exports = function (webpackEnv) {
               // Adds PostCSS Normalize as the reset css with default options,
               // so that it honors browserslist config in package.json
               // which in turn let's users customize the target behavior as per their needs.
-              require('postcss-normalize'),
+              // require('postcss-normalize'),
               // end
             ],
             // plugins: !useTailwind
@@ -234,6 +235,7 @@ module.exports = function (webpackEnv) {
         {
           loader: require.resolve(preProcessor),
           options: {
+            ...preProcessOptions,
             sourceMap: true,
           },
         }
@@ -557,6 +559,37 @@ module.exports = function (webpackEnv) {
                   getLocalIdent: getCSSModuleLocalIdent,
                 },
               }),
+            },
+            {
+              test: lessRegex,
+              // exclude: [/node_modules/],
+              use: getStyleLoaders(
+                {
+                  importLoaders: 3,
+                  sourceMap: isEnvProduction
+                    ? shouldUseSourceMap
+                    : isEnvDevelopment,
+                  modules: {
+                    mode: 'icss',
+                  },
+                },
+                'less-loader',
+                {
+                  lessOptions: { // 如果使用less-loader@5，请移除 lessOptions 这一级直接配置选项。
+                    modifyVars: {
+                      'primary-color': '#0088f5',
+                      'link-color': 'rgba(#000, 0.74)',
+                      'border-radius-base': '2px',
+                    },
+                    javascriptEnabled: true,
+                  },
+                },
+              ),
+              // Don't consider CSS imports dead code even if the
+              // containing package claims to have no side effects.
+              // Remove this when webpack adds a warning or an error for this.
+              // See https://github.com/webpack/webpack/issues/6571
+              sideEffects: true,
             },
             // Opt-in support for SASS (using .scss or .sass extensions).
             // By default we support SASS Modules with the

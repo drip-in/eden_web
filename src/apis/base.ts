@@ -8,10 +8,15 @@ import { PRODUCTION_DOMAIN, IS_DEV } from "../constants";
 // const searchParams = new URL(location.href).searchParams;
 // const fakeLoginToken = searchParams.get(FAKE_TOKEN_LOGIN_URL_PARAM_NAME);
 // const scmPreviewVersion = searchParams.get(SCM_PREVIEW_URL_PARAM_NAME)
+export const CSRF_TOKEN = "csrf_token";
 
 const host = IS_DEV ? "" : PRODUCTION_DOMAIN;
 
-
+export interface baseResponseStruct {
+  status_code: number;
+  status_msg?: string;
+  status_message?: string;
+}
 
 const instance = axios.create({
   baseURL: host,
@@ -46,7 +51,7 @@ const instance = axios.create({
 //     );
 // };
 
-export const baseReqInstance = <T>(config: AxiosRequestConfig): Promise<T> => {
+export const baseReqInstance = <T>(config: AxiosRequestConfig & {notNotifyOnError?: boolean}): Promise<T> => {
 
   let sendData = {
       ...(config || {}),
@@ -69,16 +74,28 @@ export const baseReqInstance = <T>(config: AxiosRequestConfig): Promise<T> => {
       };
   }
 
+  const token = window.localStorage.getItem(CSRF_TOKEN);
+  if (!!token) {
+    if (!sendData.headers) {
+      sendData.headers = {};
+    }
+    sendData.headers[CSRF_TOKEN] = token;
+  }
+
   return instance
       .request(sendData)
       .then(resp => resp.data)
       .then(resp => {
-          if (resp.status_code && resp.status_code !== 0 && resp.status_msg) {
-            notification.warn({
-              message: resp.status_msg
-            });
-          }
-          return resp;
+        if (config.notNotifyOnError) {
+          return resp
+        }
+
+        if (resp.status_code && resp.status_code !== 0 && resp.status_msg) {
+          notification.warn({
+            message: resp.status_msg
+          });
+        }
+        return resp;
       })
       .catch(e => {
         notification.warn({

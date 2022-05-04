@@ -1,0 +1,107 @@
+.action-modal {
+  display: none;
+  &.visible {
+    display: block;
+    position: relative;
+    z-index: 999;
+  }
+  .action-modal-mask {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    height: 100%;
+    z-index: 999;
+    background-color: rgba(0,0,0,.4);
+  }
+  .action-modal-wrap {
+    position: fixed;
+    overflow: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .action-modal-module {
+      width: 280px;
+      border-radius: 2px;
+      background: #fff;
+      .action-modal-title {
+        margin: 32px 20px 12px;
+        font-size: 17px;
+        font-weight: 500;
+        text-align: center;
+        color: rgba(22,24,35,1);
+        line-height: 34px;
+      }
+      .action-modal-detail {
+        margin: 0 24px 12px;
+        font-size: 14px;
+        text-align: center;
+        color: rgba(22,24,35,0.75);
+        line-height: 20px;
+      }
+      .action-modal-content {
+        width: 100%;
+        // height: 68px;
+        > span {
+          display: inline-block;
+          width: 100%;
+          text-align: center;
+          font-size:14px;
+          font-weight:400;
+          color:rgba(22,24,35,0.75);
+          line-height:68px;
+        }
+      }
+      .action-modal-footer {
+        position: relative;
+        border-top: 1px solid rgba(22,24,35,0.12);
+        .confirm-action {
+          display: flex;
+        }
+        .modal-button {
+          flex: 1;
+          width: auto;
+          height: 48px;
+          line-height: 48px;
+          font-size: 15px;
+          text-align: center;
+          &:active {
+            background-color: #ddd;
+          }
+          &:first-of-type {
+            color:rgba(22,24,35,0.75);
+            font-weight: 400;
+          }
+          &:last-of-type {
+            color:rgba(22,24,35,1);
+            font-weight: bold;
+            border-left: 1px solid #ddd;
+          }
+        }
+        .multi-option {
+          width: 100%;
+          .option-button {
+            display: block;
+            width: 100%;
+            height: 48px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 500;
+            color: rgba(22,24,35,1);
+            line-height: 48px;
+            &:not(:last-of-type) {
+              border-bottom: 0.5px solid rgba(22,24,35,0.12);
+            }
+          }
+        }
+      }
+    }
+  }
+}

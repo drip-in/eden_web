@@ -9,11 +9,11 @@ import { createTheme, Theme } from '@/composables/theme'
 import { stores } from  '@/stores/index';
 
 // import About from "./pages/About";
-import Header from '@/components/Header'
+import Header from '@/pages/Header'
 import Routes from "./routes";
 
-import '@/styles/app.scss';
 import './App.css';
+import '@/styles/app.scss';
 import commonStyles from "@/styles/common.module.scss";
 
 const basename = '/'
@@ -31,7 +31,7 @@ export interface ICreatorContext {
 export interface IState {
   context: ICreatorContext;
   userInfo: UserInfo;
-  loading: boolean;
+  loaded: boolean;
 };
 
 
@@ -46,29 +46,36 @@ class App extends Component {
       permissionList: [],
     },
     userInfo: undefined,
-    loading: false,
+    loaded: false,
   };
 
   componentDidMount() {
-    stores.userInfoStore.fetchUserInfo()
+    stores.userInfoStore
+    .fetchUserInfo({ notNotifyOnError: true })
+    .then(() => {
+      this.setState({ loaded: true })
+    })
   }
 
   render() {
+    const { loaded } = this.state
     return (
       <>
         <Helmet>
-          <html lang="cn" data-device={this.state.context.device} />
+          <html lang="cn" data-device={this.state.context.device} data-theme={this.state.context.theme} />
           <body />
           <title>deesta.cn</title>
         </Helmet>
-        <Router basename={basename}>
-          <div className={commonStyles.appContainer}>
-            <Provider store = {stores}>
-              <Route path="/" render={(props) => <Header {...props} />} />
-              <Routes />
-            </Provider>
-          </div>
-        </Router>
+        {loaded && (
+          <Router basename={basename}>
+            <div className={commonStyles.appContainer}>
+              <Provider store = {stores}>
+                <Route path="/" render={(props) => <Header {...props} />} />
+                <Routes />
+              </Provider>
+            </div>
+          </Router>
+        )}
       </>
     );
   }

@@ -35,7 +35,7 @@ body {
   background-color: #f5f6fa;
   font-family: helvetica, Arial, Hiragino Sans GB, Microsoft YaHei, simsun;
   line-height: 1.5;
-  font-size: 62.5%;
+  font-size: 12px !important;
   height: auto;
 }
 
@@ -61,7 +61,7 @@ li {
   padding: 10px 20px;
 }
 
-ul {
+ol, ul, dl {
   padding: 0;
   margin: 0;
 }
