@@ -86,6 +86,7 @@ export const baseReqInstance = <T>(config: AxiosRequestConfig & {notNotifyOnErro
       .request(sendData)
       .then(resp => resp.data)
       .then(resp => {
+        console.log(resp);
         if (config.notNotifyOnError) {
           return resp
         }
@@ -98,6 +99,7 @@ export const baseReqInstance = <T>(config: AxiosRequestConfig & {notNotifyOnErro
         return resp;
       })
       .catch(e => {
+        console.log(e)
         notification.warn({
           message: `oops..好像出了点问题，请刷新下本页面。`
         })

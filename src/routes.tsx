@@ -31,9 +31,11 @@ function load(component) {
 }
 
 const IdlDeploy = asyncComponent(() => load('idl-deploy'));
+const Editor = asyncComponent(() => load('MarkdownEditor'));
+
 
 // const IdlDeploy = props => <LoadPage {...props}>{() => load("idl-deploy")}</LoadPage>
-// const IdlExecution = props => <LoadPage {...props}>{() => load("idl-execution")}</LoadPage>
+const IdlExecution = props => <LoadPage {...props}>{() => load("idl-execution")}</LoadPage>
 
 
 export default class Routes extends Component {
@@ -41,7 +43,8 @@ export default class Routes extends Component {
       return (
         <div className={styles.wrapper}>
           <Route path="/idl/deploy" exact component={(props) => <IdlDeploy {...props} />} />
-          {/* <Route path="/idl/execution" exact component={IdlExecution} /> */}
+          <Route path="/idl/execution" exact component={(props) => <IdlExecution {...props} />} />
+          <Route path="/editor" exact component={Editor} />
         </div>
       );
   }

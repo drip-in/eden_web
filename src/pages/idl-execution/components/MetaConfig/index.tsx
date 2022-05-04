@@ -195,6 +195,20 @@ class MetaConfig extends React.Component<Props, State> {
                           <Option value="POST">POST</Option>
                         </Select>
                       </Form.Item>
+                      <Form.Item 
+                        {...field}
+                        name={[field.name, 'httpMethod']}
+                        fieldKey={[field.fieldKey, 'httpMethod']}
+                        label="Http Method"
+                        rules={[{ required: true, message: 'Missing httpMethod' }]}
+                      >
+                        <Select
+                          placeholder="请选择"
+                        >
+                          <Option value="GET">GET</Option>
+                          <Option value="POST">POST</Option>
+                        </Select>
+                      </Form.Item>
                       <Form.Item
                         {...field} 
                         name={[field.name, 'name']}
@@ -238,10 +252,10 @@ class MetaConfig extends React.Component<Props, State> {
                         label="接口类型" 
                         rules={[{ required: true, message: 'Missing apiType' }]}
                       >
-                        <Radio.Group>
+                        {/* <Radio.Group>
                           <Radio value="data">data</Radio>
                           <Radio value="functional">functional</Radio>
-                        </Radio.Group>
+                        </Radio.Group> */}
                       </Form.Item>
                     </div>
                 </Space>
