@@ -27,7 +27,7 @@ const ForkTsCheckerWebpackPlugin =
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 
 const createEnvironmentHash = require('./webpack/persistentCache/createEnvironmentHash');
-
+const SemiWebpackPlugin = require('@douyinfe/semi-webpack-plugin').default;
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
 
@@ -459,6 +459,24 @@ module.exports = function (webpackEnv) {
                 and: [/\.(ts|tsx|js|jsx|md|mdx)$/],
               },
             },
+            {
+              test: /\.md$/,
+              use: 'raw-loader'
+            },
+            // {
+            //   test: /\.md$/,
+            //   use: [
+            //     {
+            //       loader: "html-loader"
+            //     },
+            //     {
+            //       loader: "markdown-loader",
+            //       options: {
+            //         /* your options here , see marked get more*/
+            //       }
+            //     }
+            //   ]
+            // },
             // Process application JS with Babel.
             // The preset includes JSX, Flow, TypeScript, and some ESnext features.
             {
@@ -655,6 +673,13 @@ module.exports = function (webpackEnv) {
       ].filter(Boolean),
     },
     plugins: [
+      new SemiWebpackPlugin({
+        theme: {
+          name: '@semi-bot/semi-theme-eden',
+          include: '~@semi-bot/semi-theme-eden/scss/local.scss'
+        }
+        /* ...options */
+      }),
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         Object.assign(

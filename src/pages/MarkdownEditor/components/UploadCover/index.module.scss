@@ -1,0 +1,23 @@
+.uploader {
+  width: 150px;
+  height: 100px;
+  margin-bottom: 10px;
+  :global {
+    .ant-upload {
+      width: 150px;
+      height: 100px;
+    }
+  }
+}
+
+.upload-text {
+  font-size: 14px;
+  color: #8590A6;
+  margin-top: 8px;
+}
+
+.upload-note {
+  color: #999999;
+  font-size: 13px;
+  line-height: 20px;
+}

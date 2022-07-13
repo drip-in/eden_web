@@ -236,10 +236,10 @@ class MetaConfig extends React.Component<Props, State> {
                         label="接口类型"
                         rules={[{ required: true, message: 'Missing apiType' }]}
                       >
-                        <Radio.Group>
+                        {/* <Radio.Group>
                           <Radio value="data">data</Radio>
                           <Radio value="functional">functional</Radio>
-                        </Radio.Group>
+                        </Radio.Group> */}
                       </Form.Item>
                     </div>
                 </Space>

@@ -17,10 +17,15 @@ class UserInfoStore {
     .getUserInfo(params)
     .then(
       resp => {
+        console.log(resp)
         if (resp.status_code == 0) {
           runInAction(() => {
             this.userInfo = resp.user_info;
             this.userInfo.avatar_url = avatar  
+          })
+        } else {
+          runInAction(() => {
+            this.userInfo = undefined;
           })
         }
       }

@@ -39,7 +39,7 @@ class Notification extends Component<RouteComponentProps & IProps, State> {
     return (
       <li className={styles.notification}>
         <Dropdown
-          placement="bottomCenter"
+          placement="bottom"
           trigger={["click"]}
           overlay={this.renderDropdownMenu()}
           arrow

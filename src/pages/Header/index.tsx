@@ -34,9 +34,6 @@ class Header extends Component<IProps & RouteComponentProps, State> {
   state: State = {
     isModalVisible: false
   }
-  componentDidMount(): void {
-    
-  }
 
   showLoginModal = () => {
     this.setState({ isModalVisible: true })

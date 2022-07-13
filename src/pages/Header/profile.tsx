@@ -99,7 +99,7 @@ class Profile extends Component<RouteComponentProps & IProps, State> {
     return (
       <li className={styles.profile}>
         <Dropdown
-          placement="bottomCenter"
+          placement="bottom"
           trigger={["click"]}
           overlay={this.renderDropdownMenu()}
         >
