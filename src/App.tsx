@@ -6,11 +6,13 @@ import { Helmet } from "react-helmet";
 
 import { PermissionKeys, PermissionStruct, UserInfo, UserInfoApis } from "@/apis/user_info";
 import { createTheme, Theme } from '@/composables/theme'
-import { stores } from  '@/stores/index';
+import { Device } from "@/composables/device";
+import { stores } from  '@/stores';
+import Util from "@/utils";
 
 // import About from "./pages/About";
 import Header from '@/pages/Header'
-import Routes from "./routes";
+import Routes, { RouteStruct } from "./routes";
 
 import './App.css';
 import '@/styles/app.scss';
@@ -20,7 +22,7 @@ const basename = '/'
 
 export interface ICreatorContext {
   theme: Theme;
-  device: string;
+  device: Device;
   language: string;
   userAgent: string;
 
@@ -39,7 +41,7 @@ class App extends Component {
   state: IState = {
     context: {
       theme: Theme.Light,
-      device: "desktop",
+      device: Device.Desktop,
       language: "",
       userAgent: "",
       userInfo: undefined,
@@ -57,6 +59,23 @@ class App extends Component {
     })
   }
 
+  generateRoutes = (pages: RouteStruct[], device: Device, parentRoutePath = "") => {
+    const { userInfo } = this.state.context;
+    return pages.map(route => {
+      if (!route.shouldRender(userInfo)) {
+        return null;
+      }
+      return route.children 
+      ? this.generateRoutes(route.children, device, route.path) 
+      : <Route 
+        exact={route.isExact} 
+        path={`${parentRoutePath}${route.path}`} 
+        component={device == Device.Desktop ? route.components.default : route.components.mobile} 
+        key={route.name} 
+      />;
+    });
+  };
+
   render() {
     const { loaded } = this.state
     return (
@@ -64,14 +83,16 @@ class App extends Component {
         <Helmet>
           <html lang="cn" data-device={this.state.context.device} data-theme={this.state.context.theme} />
           <body />
-          <title>deesta.cn</title>
+          <title>drippin.cn</title>
         </Helmet>
         {loaded && (
           <Router basename={basename}>
             <div className={commonStyles.appContainer}>
               <Provider store = {stores}>
                 <Route path="/" render={(props) => <Header {...props} />} />
-                <Routes />
+                {/* 路由组件 */}
+                <div>{Util.flattenArray(this.generateRoutes(Routes, this.state.context.device))}</div>
+                {/* <Routes /> */}
               </Provider>
             </div>
           </Router>

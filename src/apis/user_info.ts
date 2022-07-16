@@ -3,7 +3,7 @@ import { BaseResp } from "./interfaces";
 import { baseResponseStruct } from "./base";
 import { useParams } from "react-router";
 
-const urlMap = {
+export const UserInfoUrlMap = {
   sendCaptcha: '/eden/v1/user/captcha/send',
   userLogin: '/eden/v1/user/login',
   userLogout: '/eden/v1/user/logout',
@@ -197,42 +197,42 @@ interface GroupListResponse extends BaseResp {
 export const UserInfoApis = {
   async sendCaptcha(params: SendCaptchaParam) {
     return baseReqInstance<baseResponseStruct>({
-      url: `${urlMap.sendCaptcha}`,
+      url: `${UserInfoUrlMap.sendCaptcha}`,
       method: 'post',
       data: params,
     });
   },
   async userLogin(params: LoginParam) {
     return baseReqInstance<baseResponseStruct & LoginResp>({
-      url: `${urlMap.userLogin}`,
+      url: `${UserInfoUrlMap.userLogin}`,
       method: 'post',
       data: params,
     });
   },
   async getUserInfo(params?) {
     return baseReqInstance<baseResponseStruct & GetUserInfoResp>({
-      url: `${urlMap.getUserInfo}`,
+      url: `${UserInfoUrlMap.getUserInfo}`,
       method: 'get',
       notNotifyOnError: params.notNotifyOnError
     });
   },
   async userLogout() {
     return baseReqInstance<baseResponseStruct>({
-      url: `${urlMap.userLogout}`,
+      url: `${UserInfoUrlMap.userLogout}`,
       method: 'post',
       // data: params
     });
   },
   async updateContactInfo(params) {
     return baseReqInstance<baseResponseStruct>({
-      url: `${urlMap.updateContactInfo}`,
+      url: `${UserInfoUrlMap.updateContactInfo}`,
       method: 'post',
       data: params
     });
   },
   async sendMobileCode(params) {
     return baseReqInstance<baseResponseStruct>({
-      url: `${urlMap.fetchVerifyCode}`,
+      url: `${UserInfoUrlMap.fetchVerifyCode}`,
       method: 'post',
       data: params
     });
@@ -240,7 +240,7 @@ export const UserInfoApis = {
   // 获取当前用户团购活动列表
   async getGroupList(params) {
     return baseReqInstance<GroupListResponse>({
-      url: `${urlMap.getGroupList}`,
+      url: `${UserInfoUrlMap.getGroupList}`,
       method: 'get',
       data: params,
     })

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
+import { RouteComponentProps, StaticContext } from "react-router";
 import LoadPage from './utils/LoadPage';
-import styles from "@/styles/base.scss";
+import { UserInfo } from "@/apis/user_info";
 
 function asyncComponent(getComponent) {
   return class AsyncComponent extends React.Component {
@@ -32,20 +33,53 @@ function load(component) {
 
 const IdlDeploy = asyncComponent(() => load('idl-deploy'));
 const Editor = asyncComponent(() => load('MarkdownEditor'));
-
-
 // const IdlDeploy = props => <LoadPage {...props}>{() => load("idl-deploy")}</LoadPage>
 const IdlExecution = props => <LoadPage {...props}>{() => load("idl-execution")}</LoadPage>
 
+export type RouteStruct = {
+  name: string; // 显示在菜单上的项目名
+  path: string; // 路径
+  isExact?: boolean; // 是否精确匹配
+  children?: RouteStruct[]; // 子路由
+  shouldRender: (userInfo: UserInfo) => boolean; // 应当注册/显示该路由
+  components: {
+    default: (props: RouteComponentProps<{}, StaticContext, any>) => JSX.Element;
+    mobile: (props: RouteComponentProps<{}, StaticContext, any>) => JSX.Element;
+  },
+};
 
-export default class Routes extends Component {
-  render() {
-      return (
-        <div className={styles.wrapper}>
-          <Route path="/idl/deploy" exact component={(props) => <IdlDeploy {...props} />} />
-          <Route path="/idl/execution" exact component={(props) => <IdlExecution {...props} />} />
-          <Route path="/editor" exact component={Editor} />
-        </div>
-      );
+
+const Routes: RouteStruct[] = [
+  {
+    name: "deploy",
+    path: "/idl/deploy",
+    isExact: true,
+    shouldRender: (userInfo: UserInfo) => true,
+    components: {
+      default: (props: RouteComponentProps) => <IdlDeploy {...props} />,
+      mobile: (props: RouteComponentProps) => null,
+    }
+  },
+  {
+    name: "execution",
+    path: "/idl/execution",
+    isExact: true,
+    shouldRender: (userInfo: UserInfo) => true,
+    components: {
+      default: (props: RouteComponentProps) => <IdlExecution {...props} />,
+      mobile: (props: RouteComponentProps) => null,
+    }
+  },
+  {
+    name: "编辑器",
+    path: "/editor",
+    isExact: true,
+    shouldRender: (userInfo: UserInfo) => true,
+    components: {
+      default: (props: RouteComponentProps) => <Editor {...props} />,
+      mobile: (props: RouteComponentProps) => null,
+    }
   }
-}
+];
+
+export default Routes;

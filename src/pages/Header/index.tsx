@@ -50,7 +50,7 @@ class Header extends Component<IProps & RouteComponentProps, State> {
       credential
     }).then(
       resp => {
-        if (resp.status_code == 0) {
+        if (resp && resp.status_code == 0) {
           this.setState({ isModalVisible: false })
           window.localStorage.setItem(CSRF_TOKEN, resp.token);
           // 
