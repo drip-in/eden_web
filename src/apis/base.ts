@@ -4,7 +4,7 @@ import axios, { AxiosRequestConfig } from "axios";
 
 import { notification } from "antd";
 import { PRODUCTION_DOMAIN, IS_DEV } from "../constants";
-
+import { UserInfoUrlMap } from "./user_info";
 // const searchParams = new URL(location.href).searchParams;
 // const fakeLoginToken = searchParams.get(FAKE_TOKEN_LOGIN_URL_PARAM_NAME);
 // const scmPreviewVersion = searchParams.get(SCM_PREVIEW_URL_PARAM_NAME)
@@ -74,18 +74,26 @@ export const baseReqInstance = <T>(config: AxiosRequestConfig & {notNotifyOnErro
       };
   }
 
-  const token = window.localStorage.getItem(CSRF_TOKEN);
-  if (!!token) {
-    if (!sendData.headers) {
-      sendData.headers = {};
+  // 登录接口不能带上csrf_token
+  if (config.url != UserInfoUrlMap.userLogin) {
+    const token = window.localStorage.getItem(CSRF_TOKEN);
+    if (!!token) {
+      if (!sendData.headers) {
+        sendData.headers = {};
+      }
+      sendData.headers[CSRF_TOKEN] = token;
     }
-    sendData.headers[CSRF_TOKEN] = token;
   }
 
   return instance
       .request(sendData)
-      .then(resp => resp.data)
       .then(resp => {
+        return resp.data
+      })
+      .then(resp => {
+        if (!resp) {
+          return resp;
+        }
         console.log(resp);
         if (config.notNotifyOnError) {
           return resp
